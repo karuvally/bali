@@ -14,9 +14,9 @@ notifications only when required.
 ## Usage  
 bali [options]  
 
--h  --help      displays short help screen  
--d  --daemon    runs Bali in daemon mode (default mode)  
--n  --nogui     prints the battery status to stdout  
+    -h  --help      displays short help screen  
+    -d  --daemon    runs Bali in daemon mode (default mode)  
+    -n  --nogui     prints the battery status to stdout  
 
 ## Requirements  
 * A notification daemon compatible with libnotify (dunst)
