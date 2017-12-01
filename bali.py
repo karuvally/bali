@@ -9,7 +9,6 @@
 # multi battery support
 # also show battery status (charging/discharging/unknown)
 # method to modify cron when needed
-# exit with grace if no configuration file
 
 # import the serious stuff
 import argparse
@@ -24,8 +23,14 @@ def read_configuration_file(configuration_file_path):
 	configuration_dictionary = {}
 	notification_list = []
 
-	# read file and generate dictionary
-	configuration_file = open(configuration_file_path, 'r')
+	# open configuration file
+	try:
+		configuration_file = open(configuration_file_path, 'r')
+	except:
+		print('cannot access configuration file')
+		return
+	
+	# process the configuration file
 	for line in configuration_file:
 		if line[0] == '#' or not line.strip():
 			continue
