@@ -25,6 +25,7 @@ bali [options]
 
 ## Configuration
 Bali can be configured by editing the configuration file at ~/.config/bali.conf  
+
     notification=30     set battery level notification at 30%
     notification=20     any number of notifications can be present  
     low_warning=10      shows battery low warning at 10%
