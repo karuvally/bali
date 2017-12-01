@@ -5,16 +5,17 @@
 # TODO
 # constant notification and beep when battery below 5%
 # automatically shutdown or sleep system when critical battery
-# coloured notifications
 # installation script
 # multi battery support
-# to cron or not to cron
 # also show battery status (charging/discharging/unknown)
+# method to modify cron when needed
+# exit with grace if no configuration file
 
 # import the serious stuff
 import argparse
 import subprocess
 import os
+import time
 
 
 # read and process configuration
@@ -71,7 +72,7 @@ def check_battery(configuration, daemon=True, no_gui=False):
 	# critical battery alert
 	if int(battery_value) < configuration['critical_warning']:
 		subprocess.run(['notify-send', 'Battery critical! (at ' +
-			battery_value + '%)'])
+			battery_value + '%) -u critical'])
 	
 	return	
 
@@ -94,11 +95,13 @@ def main():
 	
 	arguments = parser.parse_args()
 	
+	# read check_interval, write to cron if new value
+	
 	# loop only if started in daemon mode
 	if arguments.daemon:
 		while True:
 			check_battery(configuration=configuration_dictionary, daemon=True)
-			time.sleep(configuration_dictionary['check_interval'])
+			time.sleep(configuration_dictionary['check_interval']) # remove
 	else:
 		check_battery(configuration=configuration_dictionary, daemon=False,
 			no_gui=arguments.nogui)
