@@ -2,13 +2,6 @@
 # bali, the battery life monitor (alpha release)
 # Released under GNU General Public License
 
-# TODO
-# constant notification and beep when battery below 5%
-# automatically shutdown or sleep system when critical battery
-# installation script
-# multi battery support
-# also show battery status (charging/discharging/unknown)
-# method to modify cron when needed
 
 # import the serious stuff
 import argparse
