@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # bali, the battery life monitor (alpha release)
 # Released under GNU General Public License
+# Copyright 2017-2018 Aswin Babu Karuvally
 
 
 # import the serious stuff
@@ -41,16 +42,13 @@ def read_configuration_file(configuration_file_path):
 
 
 # check the battery, issue warnings
-def check_battery(configuration, daemon=True, no_gui=False):
+def check_battery(configuration, daemon = True):
 	# open the battery file
 	battery_file = open('/sys/class/power_supply/BAT0/capacity')
 	battery_value = battery_file.read().rstrip()
 	
 	# show battery if run in non-daemon mode
 	if daemon == False:
-		if no_gui == True:
-			print('Battery is at ' + battery_value + '%')
-			return
 		subprocess.run(['notify-send', 'Battery is at ' + battery_value + '%'])
 		return
 		
@@ -70,7 +68,7 @@ def check_battery(configuration, daemon=True, no_gui=False):
 	# critical battery alert
 	if int(battery_value) < configuration['critical_warning']:
 		subprocess.run(['notify-send', 'Battery critical! (at ' +
-			battery_value + '%) -u critical'])
+			battery_value + '%)', '-u critical'])
 	
 	return	
 
@@ -83,25 +81,20 @@ def main():
 	
 	# process command line arguments
 	parser = argparse.ArgumentParser(
-		description='The Battery Life monitor, alpha release')
+		description = 'The Battery Life monitor, alpha release')
 	
-	parser.add_argument('-d', '--daemon', action='store_true',
+	parser.add_argument('-d', '--daemon', action = 'store_true',
 		help = 'start in daemon mode')
-	
-	parser.add_argument('-n', '--nogui', action='store_true',
-		help = 'start in non-gui mode')
 	
 	arguments = parser.parse_args()
 	
-	# read check_interval, write to cron if new value
-	
-	# loop only if started in daemon mode
+	# check whether to start in normal/daemon mode
 	if arguments.daemon:
-		while True:
-			check_battery(configuration=configuration_dictionary, daemon=True)
-			time.sleep(configuration_dictionary['check_interval']) # remove
+	    check_battery(configuration = configuration_dictionary,
+            daemon = True)
 	else:
-		check_battery(configuration=configuration_dictionary, daemon=False,
-			no_gui=arguments.nogui)
+		check_battery(configuration=configuration_dictionary, daemon = False)
 
+
+# call the main function
 main()
